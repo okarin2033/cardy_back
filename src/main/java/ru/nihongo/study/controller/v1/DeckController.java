@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.nihongo.study.entity.Deck;
+import ru.nihongo.study.entity.UserInfo;
 import ru.nihongo.study.service.DeckService;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class DeckController {
 
     @PostMapping
     public ResponseEntity<Deck> createDeck(@RequestHeader("User-ID") Long userId, @RequestBody Deck deck) {
-        deck.setUserId(userId);
+        deck.getUserInfos().add(new UserInfo(userId));
         Deck createdDeck = deckService.createDeck(deck);
         return ResponseEntity.ok(createdDeck);
     }

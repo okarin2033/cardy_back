@@ -3,6 +3,7 @@ package ru.nihongo.study.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.nihongo.study.entity.Deck;
+import ru.nihongo.study.entity.UserInfo;
 import ru.nihongo.study.repository.DeckRepository;
 
 import java.util.List;
@@ -27,6 +28,6 @@ public class DeckService {
     }
 
     public List<Deck> getDecksByUserId(Long userId) {
-        return deckRepository.findByUserId(userId);
+        return deckRepository.findByUserInfosContaining(new UserInfo(userId));
     }
 }
