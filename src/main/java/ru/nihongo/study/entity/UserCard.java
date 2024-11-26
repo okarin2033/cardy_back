@@ -22,7 +22,7 @@ public class UserCard {
 
     @MapsId("userId")
     @JoinColumn(name = "user_id")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private UserInfo user;
 
     @MapsId("cardId")

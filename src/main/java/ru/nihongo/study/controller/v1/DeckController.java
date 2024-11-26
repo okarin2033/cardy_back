@@ -25,18 +25,18 @@ public class DeckController {
         return ResponseEntity.ok(new IdResponseDto(createdDeck.getId()));
     }
 
+    @GetMapping()
+    public ResponseEntity<List<DeckDto>> getUserDecks() {
+        List<Deck> decks = deckService.getUserDecks();
+        return ResponseEntity.ok(decks.stream()
+            .map(deckMapper::mapToDto)
+            .toList());
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<DeckDto> getDeckById(@PathVariable Long id) {
         Deck deck = deckService.getDeckById(id);
         return ResponseEntity.ok(deckMapper.mapToDto(deck));
-    }
-
-    @GetMapping("/by-user/{userid}")
-    public ResponseEntity<List<DeckDto>> getDecksByUserId(@PathVariable("userid") Long userId) {
-        List<Deck> decks = deckService.getDecksByUserId(userId);
-        return ResponseEntity.ok(decks.stream()
-            .map(deckMapper::mapToDto)
-            .toList());
     }
 
     @DeleteMapping("/{id}")

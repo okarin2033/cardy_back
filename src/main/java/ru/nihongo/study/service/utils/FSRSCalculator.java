@@ -18,24 +18,6 @@ public class FSRSCalculator {
     private static final double DEFAULT_STABILITY = 1.0;
     private static final double MIN_STABILITY = 0.1;
 
-    // Оценки ответа пользователя
-    public enum Rating {
-        AGAIN(0),
-        HARD(1),
-        GOOD(2),
-        EASY(3);
-
-        private final int value;
-
-        Rating(int value) {
-            this.value = value;
-        }
-
-        public int getValue() {
-            return value;
-        }
-    }
-
     // Проверка, нуждается ли карточка в повторении
     public boolean isDueForReview(UserCard userCard) {
         if (userCard.isNew()) {
@@ -72,18 +54,12 @@ public class FSRSCalculator {
 
     // Преобразование ReviewAction в Rating
     private Rating getRatingFromAction(ReviewAction action) {
-        switch (action) {
-            case AGAIN:
-                return Rating.AGAIN;
-            case HARD:
-                return Rating.HARD;
-            case GOOD:
-                return Rating.GOOD;
-            case EASY:
-                return Rating.EASY;
-            default:
-                return Rating.AGAIN;
-        }
+        return switch (action) {
+            case HARD -> Rating.HARD;
+            case GOOD -> Rating.GOOD;
+            case EASY -> Rating.EASY;
+            default -> Rating.AGAIN;
+        };
     }
 
     // Функция обновления сложности
@@ -123,5 +99,23 @@ public class FSRSCalculator {
         userCard.setLastReviewed(LocalDateTime.now());
         userCard.setNextReview(LocalDateTime.now());
         userCard.setNew(true);
+    }
+
+    // Оценки ответа пользователя
+    public enum Rating {
+        AGAIN(0),
+        HARD(1),
+        GOOD(2),
+        EASY(3);
+
+        private final int value;
+
+        Rating(int value) {
+            this.value = value;
+        }
+
+        public int getValue() {
+            return value;
+        }
     }
 }

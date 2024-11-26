@@ -9,7 +9,10 @@ import ru.nihongo.study.repository.DeckRepository;
 import ru.nihongo.study.repository.UserInfoRepository;
 import ru.nihongo.study.repository.exception.EntityNotFoundException;
 import ru.nihongo.study.service.utils.FSRSCalculator;
+import ru.nihongo.study.service.utils.SecurityUtil;
+import ru.nihongo.study.repository.UserCardRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -21,6 +24,8 @@ public class DeckService {
     private FSRSCalculator fsrsCalculator;
     @Autowired
     private UserInfoRepository userInfoRepository;
+    @Autowired
+    private UserCardRepository userCardRepository;
 
     public Deck createDeck(Deck deck) {
         return deckRepository.save(deck);
@@ -34,7 +39,9 @@ public class DeckService {
         deckRepository.deleteById(deckId);
     }
 
-    public List<Deck> getDecksByUserId(Long userId) {
-        return deckRepository.findByUserInfosContaining(new UserInfo(userId));
+    public List<Deck> getUserDecks() {
+        return deckRepository.findByUserInfosContaining(SecurityUtil.getcurrentUserInfo()).stream()
+            .peek(deck -> deck.setNeedReview(userCardRepository.countAllByNextReviewAfter(LocalDateTime.now())))
+            .toList();
     }
 }

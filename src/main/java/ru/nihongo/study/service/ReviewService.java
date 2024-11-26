@@ -14,7 +14,6 @@ import ru.nihongo.study.repository.UserCardRepository;
 import ru.nihongo.study.repository.UserInfoRepository;
 import ru.nihongo.study.service.utils.FSRSCalculator;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 

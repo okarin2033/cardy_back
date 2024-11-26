@@ -8,6 +8,7 @@ import ru.nihongo.study.entity.Card;
 
 @Mapper(componentModel = "spring")
 public interface CardMapper {
+    @Mapping(target = "deckId", source = "deck.id")
     CardDto mapToDto(Card card);
     @Mapping(source = "deckId", target = "deck.id")
     Card mapToEntity(CreateCardDto dto);

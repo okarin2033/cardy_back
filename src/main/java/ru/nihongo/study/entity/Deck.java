@@ -11,8 +11,10 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,4 +42,7 @@ public class Deck {
     )
     @JsonBackReference
     private List<UserInfo> userInfos;
+
+    @Transient
+    private Long needReview;
 }

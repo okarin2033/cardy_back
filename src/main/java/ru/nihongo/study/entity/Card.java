@@ -23,18 +23,13 @@ public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String front;
-
     private String back;
-
     private String hint;
-
-    private Long userId;
 
     @JoinColumn(name = "deck_id")
     @JsonBackReference
-    @ManyToOne()
+    @ManyToOne
     private Deck deck;
 
     @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)

@@ -13,7 +13,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface DeckMapper {
     @Mapping(target = "count", expression = "java(getCount(deck))")
-    @Mapping(target = "needReview", expression = "java(-1L)")
     DeckDto mapToDto(Deck deck);
 
     @Mapping(source = "userId", target = "userInfos")

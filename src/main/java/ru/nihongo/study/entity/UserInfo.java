@@ -13,6 +13,9 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
@@ -21,7 +24,8 @@ import java.util.List;
 @Setter
 @Table(name = "users") // Рекомендуется явно указать имя таблицы
 @NoArgsConstructor
-public class UserInfo {
+public class UserInfo implements UserDetails {
+
     public UserInfo(Long userId) {
         this.id = userId;
     }
@@ -29,6 +33,12 @@ public class UserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @Column(unique = true, nullable = false)
+    private String username;
+
+    @Column(nullable = false)
+    private String password;
 
     @Column(name = "name")
     private String name;
@@ -40,4 +50,31 @@ public class UserInfo {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
     private List<UserCard> userCards;
+
+    // Реализация методов UserDetails
+
+    @Override
+    public List<GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_USER")); // Можно расширить роли
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true; // Можно добавить логику
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true; // Можно добавить логику
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true; // Можно добавить логику
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true; // Можно добавить логику
+    }
 }
