@@ -1,4 +1,4 @@
-package ru.nihongo.study.security;
+package ru.nihongo.study.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -42,7 +42,8 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Разрешить все OPTIONS запросы
                 .requestMatchers("/v1/auth/**").permitAll() // Разрешить доступ к /v1/auth/**
-                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Разрешить доступ к Swagger
+                .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()// Разрешить доступ к Swagger
+                .requestMatchers("/error").permitAll()
                 .anyRequest().authenticated() // Все остальные запросы требуют аутентификации
             )
             .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class); // Добавить JWT фильтр

@@ -28,6 +28,7 @@ public class DeckService {
     private UserCardRepository userCardRepository;
 
     public Deck createDeck(Deck deck) {
+        deck.setUserInfos(List.of(SecurityUtil.getcurrentUserInfo()));
         return deckRepository.save(deck);
     }
 
@@ -41,7 +42,7 @@ public class DeckService {
 
     public List<Deck> getUserDecks() {
         return deckRepository.findByUserInfosContaining(SecurityUtil.getcurrentUserInfo()).stream()
-            .peek(deck -> deck.setNeedReview(userCardRepository.countAllByNextReviewAfter(LocalDateTime.now())))
+            .peek(deck -> deck.setNeedReview(userCardRepository.countAllByNextReviewBefore(LocalDateTime.now())))
             .toList();
     }
 }

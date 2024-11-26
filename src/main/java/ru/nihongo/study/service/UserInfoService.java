@@ -9,7 +9,12 @@ import ru.nihongo.study.repository.exception.EntityNotFoundException;
 @Service
 @RequiredArgsConstructor
 public class UserInfoService {
-    public UserInfoRepository userInfoRepository;
+    private final UserInfoRepository userInfoRepository;
+
+    public UserInfo getByUsername(String login) {
+        return userInfoRepository.findByUsername(login)
+            .orElseThrow(() -> new EntityNotFoundException("UserInfo", login));
+    }
 
     public UserInfo getById(Long id) {
         return userInfoRepository.findById(id)

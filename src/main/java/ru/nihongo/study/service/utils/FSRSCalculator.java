@@ -10,20 +10,20 @@ import java.time.temporal.ChronoUnit;
 @Component
 public class FSRSCalculator {
 
-    // Параметры модели FSRS (могут быть настроены на основе исследований)
-    private static final double DEFAULT_DIFFICULTY = 0.3;
+    // Параметры модели FSRS
+    private static final double DEFAULT_DIFFICULTY = 1;
     private static final double MIN_DIFFICULTY = 0.1;
-    private static final double MAX_DIFFICULTY = 1.0;
+    private static final double MAX_DIFFICULTY = 10;
 
     private static final double DEFAULT_STABILITY = 1.0;
-    private static final double MIN_STABILITY = 0.1;
+    private static final double MIN_STABILITY = 0.1667; // 4 часа в днях
+    private static final double MAX_STABILITY = 180.0;  // 180 дней
 
     // Проверка, нуждается ли карточка в повторении
     public boolean isDueForReview(UserCard userCard) {
         if (userCard.isNew()) {
             return true; // Новые карточки всегда доступны для изучения
         }
-
         return !LocalDateTime.now().isBefore(userCard.getNextReview());
     }
 
@@ -40,15 +40,35 @@ public class FSRSCalculator {
         // Вычисление времени прошедшего с последнего повторения
         long deltaDays = lastReviewed != null ? ChronoUnit.DAYS.between(lastReviewed, LocalDateTime.now()) : 0;
 
-        // Обновление стабильности и сложности
+        double newStability;
+        if (rating == Rating.AGAIN) {
+            // Для 'Again' устанавливаем стабильность на 1 минуту (1/1440 дня)
+            newStability = 1.0 / 1440.0;
+        } else {
+            // Обновление стабильности
+            newStability = calculateStability(stability, difficulty, rating);
+            // Ограничиваем стабильность между MIN и MAX
+            newStability = Math.max(MIN_STABILITY, Math.min(MAX_STABILITY, newStability));
+        }
+
+        // Обновление сложности
         double newDifficulty = calculateDifficulty(difficulty, rating);
-        double newStability = calculateStability(stability, newDifficulty, rating, deltaDays);
 
         // Установка новых значений
         userCard.setDifficulty(newDifficulty);
         userCard.setStability(newStability);
         userCard.setLastReviewed(LocalDateTime.now());
-        userCard.setNextReview(LocalDateTime.now().plusSeconds((long) (newStability * 86400L)));
+
+        if (rating == Rating.AGAIN) {
+            // Устанавливаем следующий повтор через 1 минуту
+            userCard.setNextReview(LocalDateTime.now().plusMinutes(1));
+        } else {
+            // Вычисляем интервал до следующего повторения в секундах
+            long intervalSeconds = (long) (newStability * 86400L);
+            // Устанавливаем следующий повтор
+            userCard.setNextReview(LocalDateTime.now().plusSeconds(intervalSeconds));
+        }
+
         userCard.setNew(false); // Карточка больше не считается новой
     }
 
@@ -64,31 +84,47 @@ public class FSRSCalculator {
 
     // Функция обновления сложности
     private double calculateDifficulty(double oldDifficulty, Rating rating) {
-        double newDifficulty = oldDifficulty + 0.1 - (3 - rating.getValue()) * 0.1;
+        double deltaDifficulty = 0.0;
+        switch (rating) {
+            case AGAIN:
+                deltaDifficulty = 0.0; // Не изменяем сложность
+                break;
+            case HARD:
+                deltaDifficulty = +0.3; // Значительно увеличиваем сложность
+                break;
+            case GOOD:
+                deltaDifficulty = -0.1; // Немного уменьшаем сложность
+                break;
+            case EASY:
+                deltaDifficulty = -0.3; // Сильно уменьшаем сложность
+                break;
+        }
+        double newDifficulty = oldDifficulty + deltaDifficulty;
         newDifficulty = Math.max(MIN_DIFFICULTY, Math.min(MAX_DIFFICULTY, newDifficulty));
         return newDifficulty;
     }
 
     // Функция обновления стабильности
-    private double calculateStability(double oldStability, double difficulty, Rating rating, long deltaDays) {
-        double factor = 1.0;
+    private double calculateStability(double oldStability, double difficulty, Rating rating) {
+        double factor;
         switch (rating) {
-            case AGAIN:
-                factor = 0.5;
-                break;
             case HARD:
-                factor = 0.8;
+                factor = 0.5; // Уменьшаем интервал для HARD
                 break;
             case GOOD:
-                factor = 1.0;
+                factor = 1.5; // Увеличиваем интервал для GOOD
                 break;
             case EASY:
-                factor = 1.2;
+                factor = 3.0; // Более агрессивное увеличение интервала для EASY
+                break;
+            default:
+                factor = 1.0;
                 break;
         }
 
-        double newStability = (oldStability + deltaDays / difficulty) * factor;
-        newStability = Math.max(MIN_STABILITY, newStability);
+        // Расчет новой стабильности с учетом сложности
+        double newStability = (oldStability * factor) / difficulty;
+
         return newStability;
     }
 

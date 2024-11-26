@@ -28,9 +28,8 @@ public class ReviewController {
 
     @GetMapping("/cards")
     public ResponseEntity<List<UserCardDto>> getCardsForReview(
-        @RequestParam Long deckId,
-        @RequestParam Long userId) {
-        List<UserCard> userCards = reviewService.getCardsForReview(deckId, userId);
+        @RequestParam Long deckId) {
+        List<UserCard> userCards = reviewService.getCardsForReview(deckId);
         List<UserCardDto> userCardDTOs = userCards.stream()
             .map(userCardMapper::mapToDto)
             .collect(Collectors.toList());

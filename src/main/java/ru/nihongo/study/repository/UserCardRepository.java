@@ -9,5 +9,5 @@ import java.time.LocalDateTime;
 
 @Repository
 public interface UserCardRepository extends JpaRepository<UserCard, UserCardId> {
-    long countAllByNextReviewAfter(LocalDateTime localDateTime);
+    long countAllByNextReviewBefore(LocalDateTime localDateTime);
 }

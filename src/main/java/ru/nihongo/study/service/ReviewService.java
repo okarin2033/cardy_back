@@ -13,6 +13,7 @@ import ru.nihongo.study.repository.DeckRepository;
 import ru.nihongo.study.repository.UserCardRepository;
 import ru.nihongo.study.repository.UserInfoRepository;
 import ru.nihongo.study.service.utils.FSRSCalculator;
+import ru.nihongo.study.service.utils.SecurityUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,7 +30,8 @@ public class ReviewService {
     private FSRSCalculator fsrsCalculator;
 
     @Transactional
-    public List<UserCard> getCardsForReview(Long deckId, Long userId) {
+    public List<UserCard> getCardsForReview(Long deckId) {
+        Long userId = SecurityUtil.getCurrentUserId();
         UserInfo user = userInfoRepository.findById(userId)
             .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -66,9 +68,7 @@ public class ReviewService {
 
     @Transactional
     public void updateCardReview(Long cardId, ReviewAction action) {
-        UserCardId userCardId = new UserCardId();
-        userCardId.setCardId(cardId);
-        userCardId.setUserId(0L);
+        UserCardId userCardId = new UserCardId(SecurityUtil.getCurrentUserId(), cardId);
 
         UserCard userCard = userCardRepository.findById(userCardId)
             .orElseThrow(() -> new RuntimeException("UserCard not found"));
