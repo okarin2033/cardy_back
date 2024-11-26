@@ -7,7 +7,6 @@ import ru.nihongo.study.entity.Card;
 import ru.nihongo.study.repository.CardRepository;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class CardService {
