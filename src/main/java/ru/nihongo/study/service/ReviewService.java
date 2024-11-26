@@ -52,13 +52,7 @@ public class ReviewService {
                     newUserCard.setId(userCardId);
                     newUserCard.setUser(user);
                     newUserCard.setCard(card);
-                    newUserCard.setRepetition(0);
-                    newUserCard.setInterval(0);
-                    newUserCard.setEaseFactor(2.5);
-                    newUserCard.setLastReviewed(null);
-                    newUserCard.setNextReview(LocalDateTime.now());
-                    newUserCard.setStatus(0); // Статус новой карточки
-                    newUserCard.setNew(true); // Помечаем как новую
+                    fsrsCalculator.initializeUserCard(newUserCard);
                     userCardRepository.save(newUserCard);
                     return newUserCard;
                 });

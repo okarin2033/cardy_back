@@ -31,12 +31,10 @@ public class UserCard {
     private Card card;
 
     // Поля для FSRS
-    private int repetition; // Количество повторений
-    private double interval; // Интервал повторений (дни)
-    private double easeFactor; // Коэффициент легкости
+    private double stability;
+    private double difficulty;
     private LocalDateTime lastReviewed; // Дата последнего повторения
     private LocalDateTime nextReview; // Дата следующего повторения
-    private int status; // Статус карточки (например, активна, изучена и т.д.)
 
     private boolean isNew;
 }

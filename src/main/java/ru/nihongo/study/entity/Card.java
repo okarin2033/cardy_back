@@ -34,7 +34,7 @@ public class Card {
 
     @JoinColumn(name = "deck_id")
     @JsonBackReference
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     private Deck deck;
 
     @OneToMany(mappedBy = "card", cascade = CascadeType.ALL, orphanRemoval = true)
