@@ -1,5 +1,6 @@
 package ru.nihongo.study.entity;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
@@ -19,14 +20,14 @@ public class UserCard {
     @EmbeddedId
     private UserCardId id;
 
-    @ManyToOne
     @MapsId("userId")
     @JoinColumn(name = "user_id")
+    @ManyToOne(cascade = CascadeType.ALL)
     private UserInfo user;
 
-    @ManyToOne
     @MapsId("cardId")
     @JoinColumn(name = "card_id")
+    @ManyToOne(cascade = CascadeType.ALL)
     private Card card;
 
     // Поля для FSRS

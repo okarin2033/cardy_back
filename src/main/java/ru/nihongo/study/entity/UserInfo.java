@@ -22,7 +22,7 @@ import java.util.List;
 @Table(name = "users") // Рекомендуется явно указать имя таблицы
 @NoArgsConstructor
 public class UserInfo {
-    public UserInfo (Long userId) {
+    public UserInfo(Long userId) {
         this.id = userId;
     }
 
@@ -33,7 +33,7 @@ public class UserInfo {
     @Column(name = "name")
     private String name;
 
-    @ManyToMany(mappedBy = "userInfos")
+    @ManyToMany(mappedBy = "userInfos", cascade = CascadeType.ALL)
     @JsonManagedReference
     private List<Deck> userDecks;
 

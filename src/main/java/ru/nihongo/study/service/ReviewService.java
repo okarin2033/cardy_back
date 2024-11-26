@@ -9,7 +9,6 @@ import ru.nihongo.study.entity.UserCard;
 import ru.nihongo.study.entity.UserCardId;
 import ru.nihongo.study.entity.UserInfo;
 import ru.nihongo.study.entity.enumeration.ReviewAction;
-import ru.nihongo.study.repository.CardRepository;
 import ru.nihongo.study.repository.DeckRepository;
 import ru.nihongo.study.repository.UserCardRepository;
 import ru.nihongo.study.repository.UserInfoRepository;
@@ -73,10 +72,10 @@ public class ReviewService {
     }
 
     @Transactional
-    public void updateCardReview(Long userId, Long cardId, ReviewAction action) {
+    public void updateCardReview(Long cardId, ReviewAction action) {
         UserCardId userCardId = new UserCardId();
-        userCardId.setUserId(userId);
         userCardId.setCardId(cardId);
+        userCardId.setUserId(0L);
 
         UserCard userCard = userCardRepository.findById(userCardId)
             .orElseThrow(() -> new RuntimeException("UserCard not found"));

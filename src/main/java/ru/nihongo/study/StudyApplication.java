@@ -3,7 +3,7 @@ package ru.nihongo.study;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "ru.nihongo.study")
 public class StudyApplication {
 
 	public static void main(String[] args) {

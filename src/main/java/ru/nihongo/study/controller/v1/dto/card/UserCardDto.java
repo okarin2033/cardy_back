@@ -1,4 +1,4 @@
-package ru.nihongo.study.controller.v1.dto;
+package ru.nihongo.study.controller.v1.dto.card;
 
 import lombok.Data;
 

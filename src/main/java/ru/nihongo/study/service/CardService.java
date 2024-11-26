@@ -1,5 +1,6 @@
 package ru.nihongo.study.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.nihongo.study.entity.Card;
@@ -26,7 +27,7 @@ public class CardService {
         return cardRepository.findByDeckId(deckId);
     }
 
-    public Optional<Card> getCardById(Long cardId) {
-        return cardRepository.findById(cardId);
+    public Card getCardById(Long cardId) {
+        return cardRepository.findById(cardId).orElseThrow(() -> new EntityNotFoundException("CardService" + cardId));
     }
 }
