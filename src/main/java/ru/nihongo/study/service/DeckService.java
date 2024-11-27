@@ -42,7 +42,24 @@ public class DeckService {
 
     public List<Deck> getUserDecks() {
         return deckRepository.findByUserInfosContaining(SecurityUtil.getcurrentUserInfo()).stream()
-            .peek(deck -> deck.setNeedReview(userCardRepository.countAllByNextReviewBefore(LocalDateTime.now())))
+            .peek(deck -> deck.setNeedReview(userCardRepository.countAllByNextReviewBeforeAndCardDeckIdAndUser(LocalDateTime.now(), deck.getId(),
+                SecurityUtil.getcurrentUserInfo())))
             .toList();
+    }
+
+    public boolean needsCardInitialization(Long deckId) {
+        UserInfo user = SecurityUtil.getcurrentUserInfo();
+        Deck deck = deckRepository.findById(deckId)
+            .orElseThrow(() -> new RuntimeException("Deck not found"));
+        
+        // Получаем количество карточек в колоде
+        long totalCards = deck.getCards().size();
+        
+        // Получаем количество инициализированных карточек пользователя
+        long initializedCards = userCardRepository.countByUserAndCardDeckId(user, deckId);
+        
+        // Если количество инициализированных карточек меньше общего количества,
+        // значит нужна инициализация
+        return initializedCards < totalCards;
     }
 }

@@ -15,6 +15,7 @@ import ru.nihongo.study.controller.v1.mappers.UserCardMapper;
 import ru.nihongo.study.entity.UserCard;
 import ru.nihongo.study.entity.enumeration.ReviewAction;
 import ru.nihongo.study.service.ReviewService;
+import ru.nihongo.study.service.DeckService;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -25,10 +26,16 @@ import java.util.stream.Collectors;
 public class ReviewController {
     private final ReviewService reviewService;
     private final UserCardMapper userCardMapper;
+    private final DeckService deckService;
 
     @GetMapping("/cards")
     public ResponseEntity<List<UserCardDto>> getCardsForReview(
         @RequestParam Long deckId) {
+        // Проверяем, нужна ли инициализация карточек
+        if (deckService.needsCardInitialization(deckId)) {
+            reviewService.initializeCardsForUser(deckId);
+        }
+        
         List<UserCard> userCards = reviewService.getCardsForReview(deckId);
         List<UserCardDto> userCardDTOs = userCards.stream()
             .map(userCardMapper::mapToDto)

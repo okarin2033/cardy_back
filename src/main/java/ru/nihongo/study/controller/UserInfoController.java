@@ -11,9 +11,9 @@ import ru.nihongo.study.controller.v1.mappers.UserDtoMapper;
 import ru.nihongo.study.entity.UserInfo;
 import ru.nihongo.study.service.UserInfoService;
 
-@RequiredArgsConstructor
 @RestController
 @RequestMapping("/v1/users")
+@RequiredArgsConstructor
 public class UserInfoController {
     private final UserInfoService userInfoService;
     private final UserDtoMapper mapper;

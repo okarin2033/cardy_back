@@ -11,5 +11,9 @@ public interface UserCardMapper {
     @Mapping(target = "back", source = "card.back")
     @Mapping(target = "hint", source = "card.hint")
     @Mapping(target = "cardId", source = "card.id")
+    @Mapping(target = "stability", source = "stability")
+    @Mapping(target = "difficulty", source = "difficulty")
+    @Mapping(target = "lastReviewed", source = "lastReviewed")
+    @Mapping(target = "nextReview", source = "nextReview")
     UserCardDto mapToDto(UserCard userCard);
 }

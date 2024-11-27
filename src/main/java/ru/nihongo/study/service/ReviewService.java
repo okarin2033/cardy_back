@@ -77,4 +77,29 @@ public class ReviewService {
 
         userCardRepository.save(userCard);
     }
+
+    @Transactional
+    public void initializeCardsForUser(Long deckId) {
+        UserInfo user = SecurityUtil.getcurrentUserInfo();
+
+        Deck deck = deckRepository.findById(deckId)
+            .orElseThrow(() -> new RuntimeException("Deck not found"));
+
+        List<Card> cards = deck.getCards();
+
+        for (Card card : cards) {
+            UserCardId userCardId = new UserCardId();
+            userCardId.setUserId(user.getId());
+            userCardId.setCardId(card.getId());
+
+            if (!userCardRepository.existsById(userCardId)) {
+                UserCard newUserCard = new UserCard();
+                newUserCard.setId(userCardId);
+                newUserCard.setUser(user);
+                newUserCard.setCard(card);
+                fsrsCalculator.initializeUserCard(newUserCard);
+                userCardRepository.save(newUserCard);
+            }
+        }
+    }
 }
