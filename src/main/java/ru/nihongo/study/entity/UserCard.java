@@ -7,8 +7,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
+import ru.nihongo.study.entity.enumeration.ReviewMode;
 
 import java.time.LocalDateTime;
 
@@ -37,4 +39,7 @@ public class UserCard {
     private LocalDateTime nextReview; // Дата следующего повторения
 
     private boolean isNew;
+
+    @Transient
+    private ReviewMode mode;
 }

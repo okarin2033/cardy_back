@@ -42,8 +42,8 @@ public class CardService {
     //Методы по юзеру
 
     public long getCardsForReviewCount(Long deckId) {
-        return userCardRepository.countAllByNextReviewBeforeAndCardDeckIdAndUser(LocalDateTime.now(), deckId,
-            SecurityUtil.getcurrentUserInfo());
+        return userCardRepository.countCardsToReview(LocalDateTime.now(), deckId,
+            SecurityUtil.getcurrentUserInfo(), Boolean.FALSE);
     }
 
     public List<UserCard> getUserCardsByDeckId(Long deckId) {

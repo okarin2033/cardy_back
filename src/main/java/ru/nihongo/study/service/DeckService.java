@@ -42,8 +42,8 @@ public class DeckService {
 
     public List<Deck> getUserDecks() {
         return deckRepository.findByUserInfosContaining(SecurityUtil.getcurrentUserInfo()).stream()
-            .peek(deck -> deck.setNeedReview(userCardRepository.countAllByNextReviewBeforeAndCardDeckIdAndUser(LocalDateTime.now(), deck.getId(),
-                SecurityUtil.getcurrentUserInfo())))
+            .peek(deck -> deck.setNeedReview(userCardRepository.countCardsToReview(LocalDateTime.now(), deck.getId(),
+                SecurityUtil.getcurrentUserInfo(), Boolean.FALSE)))
             .toList();
     }
 

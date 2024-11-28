@@ -4,16 +4,20 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import retrofit2.http.Query;
 import ru.nihongo.study.controller.v1.dto.ReviewActionDto;
+import ru.nihongo.study.controller.v1.dto.card.ReviewCardDto;
 import ru.nihongo.study.controller.v1.dto.card.UserCardDto;
 import ru.nihongo.study.controller.v1.mappers.UserCardMapper;
 import ru.nihongo.study.entity.UserCard;
 import ru.nihongo.study.entity.enumeration.ReviewAction;
+import ru.nihongo.study.entity.model.ReviewCard;
 import ru.nihongo.study.service.ReviewService;
 import ru.nihongo.study.service.DeckService;
 
@@ -26,19 +30,13 @@ import java.util.stream.Collectors;
 public class ReviewController {
     private final ReviewService reviewService;
     private final UserCardMapper userCardMapper;
-    private final DeckService deckService;
 
-    @GetMapping("/cards")
-    public ResponseEntity<List<UserCardDto>> getCardsForReview(
-        @RequestParam Long deckId) {
-        // Проверяем, нужна ли инициализация карточек
-        if (deckService.needsCardInitialization(deckId)) {
-            reviewService.initializeCardsForUser(deckId);
-        }
-        
-        List<UserCard> userCards = reviewService.getCardsForReview(deckId);
-        List<UserCardDto> userCardDTOs = userCards.stream()
-            .map(userCardMapper::mapToDto)
+    @GetMapping("/cards/study/{deckId}")
+    public ResponseEntity<List<ReviewCardDto>> getCardsForReview(
+        @RequestParam(value = "mode") String mode, @PathVariable Long deckId) {
+        List<ReviewCard> userCards = reviewService.getCardsForReview(deckId, mode);
+        List<ReviewCardDto> userCardDTOs = userCards.stream()
+            .map(userCardMapper::mapToReviewDto)
             .collect(Collectors.toList());
         return ResponseEntity.ok(userCardDTOs);
     }

@@ -2,8 +2,10 @@ package ru.nihongo.study.controller.v1.mappers;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import ru.nihongo.study.controller.v1.dto.card.ReviewCardDto;
 import ru.nihongo.study.controller.v1.dto.card.UserCardDto;
 import ru.nihongo.study.entity.UserCard;
+import ru.nihongo.study.entity.model.ReviewCard;
 
 @Mapper(componentModel = "spring")
 public interface UserCardMapper {
@@ -16,4 +18,6 @@ public interface UserCardMapper {
     @Mapping(target = "lastReviewed", source = "lastReviewed")
     @Mapping(target = "nextReview", source = "nextReview")
     UserCardDto mapToDto(UserCard userCard);
+
+    ReviewCardDto mapToReviewDto(ReviewCard userCard);
 }

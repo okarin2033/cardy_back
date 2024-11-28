@@ -8,5 +8,5 @@ import ru.nihongo.study.entity.enumeration.ReviewAction;
 @Setter
 public class ReviewActionDto {
     private Long userCardId;
-    private ReviewAction action; // "AGAIN", "HARD", "GOOD", "EASY"
+    private ReviewAction action; // "AGAIN", "HARD", "GOOD", "EASY", "LEARN"
 }
