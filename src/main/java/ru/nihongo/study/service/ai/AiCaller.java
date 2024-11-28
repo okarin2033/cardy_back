@@ -1,4 +1,4 @@
-package ru.nihongo.study.service.ai.modules;
+package ru.nihongo.study.service.ai;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.theokanning.openai.client.OpenAiApi;

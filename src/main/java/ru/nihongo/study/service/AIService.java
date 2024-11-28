@@ -3,8 +3,7 @@ package ru.nihongo.study.service;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.nihongo.study.service.ai.modules.AiCaller;
-import ru.nihongo.study.service.utils.SecurityUtil;
+import ru.nihongo.study.service.ai.AiCaller;
 
 @Data
 @Component
