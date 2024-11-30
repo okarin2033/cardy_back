@@ -1,4 +1,4 @@
-package ru.nihongo.study.controller;
+package ru.nihongo.study.controller.v1;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import ru.nihongo.study.service.TextService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/texts")
+@RequestMapping("v1/api/texts")
 @RequiredArgsConstructor
 public class TextController {
     private final TextService textService;
