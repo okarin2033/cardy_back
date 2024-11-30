@@ -65,7 +65,7 @@ public class CardController {
         long count = cardService.getCardsForReviewCount(deckId);
         return ResponseEntity.ok(new ReviewCountDto(count));
     }
-    //dfdfdfdf
+
     @GetMapping("/deck/{deckId}/user")
     public ResponseEntity<List<UserCardDto>> getUserCardsByDeckId(@PathVariable Long deckId) {
         // Проверяем, нужна ли инициализация карточек
