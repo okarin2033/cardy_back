@@ -18,7 +18,6 @@ public interface TextMapper {
     @Mapping(target = "userIds", expression = "java(mapUsersToIds(text.getUsers()))")
     TextDto mapToDto(Text text);
 
-    @Mapping(target = "language", expression = "java(mapLanguageToDto(text.getLanguage()))")
     TextListDto mapToListDto(Text text);
 
     @Mapping(target = "id", ignore = true)
@@ -34,10 +33,5 @@ public interface TextMapper {
         return users.stream()
                 .map(UserInfo::getId)
                 .collect(Collectors.toList());
-    }
-
-    default EnumDto<String> mapLanguageToDto(Language language) {
-        if (language == null) return null;
-        return new EnumDto<>(language.name(), language.getValue());
     }
 }

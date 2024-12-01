@@ -4,11 +4,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.nihongo.study.service.AIService;
-import ru.nihongo.study.service.TextService;
 import ru.nihongo.study.service.cache.TranslationCacheService;
 
 @RestController
-@RequestMapping("v1/api/ai")
+@RequestMapping("/v1/api/ai")
 @RequiredArgsConstructor
 public class AiHelperController {
     private final AIService aiService;

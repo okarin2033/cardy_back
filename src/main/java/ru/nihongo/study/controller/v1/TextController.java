@@ -13,7 +13,7 @@ import ru.nihongo.study.service.TextService;
 import java.util.List;
 
 @RestController
-@RequestMapping("v1/api/texts")
+@RequestMapping("v1/texts")
 @RequiredArgsConstructor
 public class TextController {
     private final TextService textService;

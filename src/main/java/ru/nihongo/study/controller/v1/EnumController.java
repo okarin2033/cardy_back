@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("v1/api/enums")
+@RequestMapping("v1/enums")
 public class EnumController {
 
     @GetMapping("/languages")
