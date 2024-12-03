@@ -1,17 +1,18 @@
 package ru.nihongo.study.entity.enumeration;
 
+import lombok.Getter;
+
+@Getter
 public enum Language {
-    JAPANESE("Japanese"),
-    ENGLISH("English"),
-    RUSSIAN("Russian");
+    JAPANESE("Japanese", "JA"),
+    ENGLISH("English", "EN"),
+    RUSSIAN("Russian", "RU");
 
     private final String value;
+    private final String deeplCode;
 
-    Language(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
+    Language(String name, String deeplCode) {
+        this.value = name;
+        this.deeplCode = deeplCode;
     }
 }

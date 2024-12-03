@@ -62,8 +62,8 @@ public class AiCaller {
             OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(apiKeyInterceptor)
                 .addInterceptor(loggingInterceptor)
-                .connectTimeout(Duration.ofSeconds(30))
-                .readTimeout(Duration.ofSeconds(30))
+                .connectTimeout(Duration.ofSeconds(60))
+                .readTimeout(Duration.ofSeconds(60))
                 .build();
 
             Retrofit retrofit = new Retrofit.Builder()

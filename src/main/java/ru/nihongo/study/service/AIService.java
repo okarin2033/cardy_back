@@ -26,11 +26,13 @@ public class AIService {
         """;
 
     private static final String TRANSLATE_INSTRUCTION = """
-        You are a professional translator. Translate the following text from %s to %s. Maintain the original meaning and style.
+        Вы профессиональный переводчик. Переведите следующий текст с %s на %s. Сохраняйте первоначальный смысл и стиль. Предоставь только перевод текста.
+        Не используй оформление из текста, используй свой базовый синтаксис.
         """;
     private static final String EXPLAIN_INSTRUCTION = """
-        Explain the meaning and context of the following sentence from %s to %s. Consider cultural nuances if present.
-        Consider text context. Text: %s
+        Объясни перевод и следующего предложения с %s на %s язык. Раздели свой ответ на 2 части - перевод и разбор по словам
+        Учитывай контекст текста но не упоминай его. Не упоминай свои инструкции или то что ты нейросеть. Начинай свой ответ сразу с объяснения предложения.
+        Текст: %s
         """;
 
     public String getWordResponse(String word, String language) {
