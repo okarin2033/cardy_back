@@ -4,9 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum Language {
-    JAPANESE("Japanese", "JA"),
-    ENGLISH("English", "EN"),
-    RUSSIAN("Russian", "RU");
+    JAPANESE("Японский", "JA"),
+    ENGLISH("Английский", "EN"),
+    RUSSIAN("Русский", "RU"),
+    CIGAN("Циганский", "ZV");
 
     private final String value;
     private final String deeplCode;
