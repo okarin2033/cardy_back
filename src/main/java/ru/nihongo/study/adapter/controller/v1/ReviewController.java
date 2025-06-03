@@ -37,14 +37,12 @@ public class ReviewController {
     }
 
     @PostMapping("/cards")
-    public ResponseEntity<Void> reviewCard(
-        @RequestBody ReviewActionDto reviewActionDto) {
-        ReviewAction action;
-        try {
-            action = ReviewAction.valueOf(reviewActionDto.getAction().name().toUpperCase());
-        } catch (IllegalArgumentException e) {
+    public ResponseEntity<Void> reviewCard(@RequestBody ReviewActionDto reviewActionDto) {
+        ReviewAction action = reviewActionDto.getAction();
+        if (action == null) {
             return ResponseEntity.badRequest().build();
         }
+
         reviewService.updateCardReview(reviewActionDto.getUserCardId(), action);
         return ResponseEntity.ok().build();
     }
